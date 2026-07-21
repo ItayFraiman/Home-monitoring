@@ -1,0 +1,40 @@
+services:
+  sensor:
+    build: ./sensor-sim
+    environment:
+      ZONES: garden,greenhouse,indoor
+      TICK_SECONDS: 5
+      DRIVER: mock
+    ports:
+      - "8001:8000"
+
+  actuator:
+    build: ./actuator-sim 
+    environment:
+      DRIVER: mock
+    ports:
+      - "8002:8000"
+
+  controller:
+    build: ./controller
+    environment:
+      SENSOR_URL: http://sensor:8000
+      ACTUATOR_URL: http://actuator:8000
+      EVAL_INTERVAL_SECONDS: 10
+
+  prometheus:
+    image: prom/prometheus:v2.53.0
+    volumes:
+      - ./prometheus/prometheus.yml:/etc/prometheus/prometheus.yml:ro
+    ports:
+      - "9090:9090"
+
+  grafana:
+    image: grafana/grafana:11.1.0
+    ports:
+      - "3000:3000"
+    volumes:
+      - grafana-data:/var/lib/grafana
+
+volumes:
+  grafana-data:
