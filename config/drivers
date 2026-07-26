@@ -1,0 +1,11 @@
+devices:
+  garden_valve:
+    driver: mock
+    type: valve
+    max_runtime_seconds: 900
+
+  indoor_dehumidifier:
+    driver: mock
+    type: dehumidifier
+    min_off_seconds: 180
+    max_runtime_seconds: 3600
