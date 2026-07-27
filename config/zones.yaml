@@ -1,0 +1,26 @@
+tick_seconds: 5
+
+zones:
+  garden:
+    temperature:
+      baseline: 22.0
+      daily_swing: 8.0
+      noise: 0.3
+    soil_moisture:
+      baseline: 40.0
+      drift_per_hour: -1.5
+      noise: 0.5
+      minimum: 0.0
+      maximum: 100.0
+
+  indoor:
+    temperature:
+      baseline: 21.0
+      daily_swing: 2.0
+      noise: 0.1
+    humidity:
+      baseline: 55.0
+      daily_swing: 5.0
+      noise: 0.8
+      minimum: 0.0
+      maximum: 100.0

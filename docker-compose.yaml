@@ -1,0 +1,53 @@
+services:
+  sensor:
+    image: ghcr.io/<owner>/home-monitoring/sensor:${IMAGE_TAG:-local}
+    environment:
+      CONFIG_PATH: /etc/home-monitoring/zones.yaml
+      TICK_SECONDS: 5
+      DRIVER: mock
+    volumes:
+      - ./config/zones.yaml:/etc/home-monitoring/zones.yaml:ro
+    ports:
+      - "8001:8000"
+
+  actuator:
+    image: ghcr.io/<owner>/home-monitoring/actuator:${IMAGE_TAG:-local}
+    environment:
+      DEVICES_PATH: /etc/home-monitoring/devices.yaml
+    volumes:
+      - ./config/devices.yaml:/etc/home-monitoring/devices.yaml:ro
+    ports:
+      - "8002:8000"
+
+  controller:
+    image: ghcr.io/<owner>/home-monitoring/controller:${IMAGE_TAG:-local}
+    environment:
+      RULES_PATH: /etc/home-monitoring/rules.yaml
+      SENSOR_URL: http://sensor:8000
+      ACTUATOR_URL: http://actuator:8000
+      EVAL_INTERVAL_SECONDS: 10
+    volumes:
+      - ./config/rules.yaml:/etc/home-monitoring/rules.yaml:ro
+    depends_on:
+      - sensor
+      - actuator
+
+  prometheus:
+    image: prom/prometheus:v2.53.0
+    volumes:
+      - ./prometheus/prometheus.yaml:/etc/prometheus/prometheus.yaml:ro
+    ports:
+      - "9090:9090"
+
+  grafana:
+    image: grafana/grafana:11.1.0
+    environment:
+      GF_AUTH_ANONYMOUS_ENABLED: "true"
+      GF_AUTH_ANONYMOUS_ORG_ROLE: Admin
+    ports:
+      - "3000:3000"
+    volumes:
+      - grafana-data:/var/lib/grafana
+
+volumes:
+  grafana-data:

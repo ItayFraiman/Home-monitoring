@@ -1,0 +1,37 @@
+name: build-sensor-image
+
+on:
+  push:
+    branches: ["local"]
+    paths:
+      - "sensor/**"
+      - ".github/workflows/build-sensor.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  packages: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Lowercase owner
+        id: owner
+        run: echo "name=${GITHUB_REPOSITORY_OWNER,,}" >> "$GITHUB_OUTPUT"
+
+      - uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - uses: docker/build-push-action@v6
+        with:
+          context: ./sensor
+          push: true
+          tags: |
+            ghcr.io/${{ github.repository_owner }}/home-monitoring/sensor:${{ github.sha }}
+            ghcr.io/${{ github.repository_owner }}/home-monitoring/sensor:local

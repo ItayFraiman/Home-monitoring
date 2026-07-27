@@ -1,0 +1,17 @@
+rules:
+  - name: garden_irrigation
+    zone: garden
+    type: threshold
+    device: garden_valve
+    duration_seconds: 300
+    conditions:
+      soil_moisture: {below: 30.0}
+      temperature: {above: 26.0}
+
+  - name: indoor_dehumidify
+    zone: indoor
+    type: hysteresis
+    device: indoor_dehumidifier
+    metric: humidity
+    on_above: 70.0
+    off_below: 55.0
