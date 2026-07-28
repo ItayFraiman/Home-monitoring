@@ -6,6 +6,7 @@ on:
     paths:
       - "controller/**"
       - ".github/workflows/build-controller-image.yaml"
+
   workflow_dispatch:
 
 permissions:
