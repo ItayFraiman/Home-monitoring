@@ -1,6 +1,6 @@
 services:
   sensor:
-    image: ghcr.io/<owner>/home-monitoring/sensor:${IMAGE_TAG:-local}
+    image: ghcr.io/itayfraiman/home-monitoring/sensor:${IMAGE_TAG:-local}
     environment:
       CONFIG_PATH: /etc/home-monitoring/zones.yaml
       TICK_SECONDS: 5
@@ -11,7 +11,7 @@ services:
       - "8001:8000"
 
   actuator:
-    image: ghcr.io/<owner>/home-monitoring/actuator:${IMAGE_TAG:-local}
+    image: ghcr.io/itayfraiman/home-monitoring/actuator:${IMAGE_TAG:-local}
     environment:
       DEVICES_PATH: /etc/home-monitoring/devices.yaml
     volumes:
@@ -20,7 +20,7 @@ services:
       - "8002:8000"
 
   controller:
-    image: ghcr.io/<owner>/home-monitoring/controller:${IMAGE_TAG:-local}
+    image: ghcr.io/itayfraiman/home-monitoring/controller:${IMAGE_TAG:-local}
     environment:
       RULES_PATH: /etc/home-monitoring/rules.yaml
       SENSOR_URL: http://sensor:8000
@@ -34,6 +34,8 @@ services:
 
   prometheus:
     image: prom/prometheus:v2.53.0
+    command:
+      - --config.file=/etc/prometheus/prometheus.yaml
     volumes:
       - ./prometheus/prometheus.yaml:/etc/prometheus/prometheus.yaml:ro
     ports:
