@@ -34,5 +34,5 @@ jobs:
           context: ./controller
           push: true
           tags: |
-            ghcr.io/${{ github.repository_owner }}/home-monitoring/controller:${{ github.sha }}
-            ghcr.io/${{ github.repository_owner }}/home-monitoring/controller:local
+            ghcr.io/${{ steps.owner.outputs.name }}/home-monitoring/controller:${{ github.sha }}
+            ghcr.io/${{ steps.owner.outputs.name }}/home-monitoring/controller:local

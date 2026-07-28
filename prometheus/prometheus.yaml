@@ -1,0 +1,16 @@
+global:
+  scrape_interval: 5s
+  evaluation_interval: 5s
+
+scrape_configs:
+  - job_name: sensor
+    static_configs:
+      - targets: ["sensor:8000"]
+
+  - job_name: actuator
+    static_configs:
+      - targets: ["actuator:8000"]
+
+  - job_name: controller
+    static_configs:
+      - targets: ["controller:8000"]
