@@ -5,7 +5,7 @@ rules:
     device: garden_valve
     duration_seconds: 300
     conditions:
-      soil_moisture: {below: 100}
+      soil_moisture: {below: 30.0}
       temperature: {above: 26.0}
 
   - name: indoor_dehumidify
