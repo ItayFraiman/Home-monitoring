@@ -4,7 +4,7 @@ on:
   push:
     branches: ["main"]
     paths:
-      - "sensor/**"
+      - "sensor-sim/**"
       - ".github/workflows/build-sensor.yml"
   workflow_dispatch:
 
@@ -33,5 +33,5 @@ jobs:
           context: ./sensor
           push: true
           tags: |
-            ghcr.io/${{ steps.owner.outputs.name }}/home-monitoring/sensor:${{ github.sha }}
-            ghcr.io/${{ steps.owner.outputs.name }}/home-monitoring/sensor:main
+            ghcr.io/${{ steps.owner.outputs.name }}/home-monitoring/sensor-sim:${{ github.sha }}
+            ghcr.io/${{ steps.owner.outputs.name }}/home-monitoring/sensor-sim:main
