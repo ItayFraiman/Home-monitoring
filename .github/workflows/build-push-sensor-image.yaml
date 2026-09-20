@@ -30,7 +30,7 @@ jobs:
 
       - uses: docker/build-push-action@v6
         with:
-          context: ./sensor
+          context: ./sensor-sim
           push: true
           tags: |
             ghcr.io/${{ steps.owner.outputs.name }}/home-monitoring/sensor-sim:${{ github.sha }}
