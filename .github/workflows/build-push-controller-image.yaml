@@ -2,7 +2,7 @@ name: build-controller-image
 
 on:
   push:
-    branches: ["local"]
+    branches: ["main"]
     paths:
       - "controller/**"
       - ".github/workflows/build-controller-image.yaml"
@@ -35,4 +35,4 @@ jobs:
           push: true
           tags: |
             ghcr.io/${{ steps.owner.outputs.name }}/home-monitoring/controller:${{ github.sha }}
-            ghcr.io/${{ steps.owner.outputs.name }}/home-monitoring/controller:local
+            ghcr.io/${{ steps.owner.outputs.name }}/home-monitoring/controller:main

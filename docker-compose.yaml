@@ -1,6 +1,6 @@
 services:
   sensor:
-    image: ghcr.io/itayfraiman/home-monitoring/sensor:${IMAGE_TAG:-local}
+    image: ghcr.io/itayfraiman/home-monitoring/sensor:${IMAGE_TAG:-main}
     environment:
       CONFIG_PATH: /etc/home-monitoring/zones.yaml
       TICK_SECONDS: 5

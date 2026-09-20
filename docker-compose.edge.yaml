@@ -11,7 +11,7 @@
 
 services:
   sensor-sim:
-    image: ghcr.io/itayfraiman/home-monitoring/sensor-sim:${IMAGE_TAG:-local}
+    image: ghcr.io/itayfraiman/home-monitoring/sensor-sim:${IMAGE_TAG:-main}
     restart: unless-stopped
     environment:
       CONFIG_PATH: /etc/home-monitoring/zones.yaml
@@ -23,7 +23,7 @@ services:
       - "8001:8000"
 
   actuator:
-    image: ghcr.io/itayfraiman/home-monitoring/actuator:${IMAGE_TAG:-local}
+    image: ghcr.io/itayfraiman/home-monitoring/actuator:${IMAGE_TAG:-main}
     restart: unless-stopped
     environment:
       DEVICES_PATH: /etc/home-monitoring/devices.yaml

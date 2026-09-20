@@ -2,7 +2,7 @@ name: build-sensor-image
 
 on:
   push:
-    branches: ["local"]
+    branches: ["main"]
     paths:
       - "sensor/**"
       - ".github/workflows/build-sensor.yml"
@@ -34,4 +34,4 @@ jobs:
           push: true
           tags: |
             ghcr.io/${{ steps.owner.outputs.name }}/home-monitoring/sensor:${{ github.sha }}
-            ghcr.io/${{ steps.owner.outputs.name }}/home-monitoring/sensor:local
+            ghcr.io/${{ steps.owner.outputs.name }}/home-monitoring/sensor:main

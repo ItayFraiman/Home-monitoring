@@ -7,7 +7,7 @@
 
 services:
   controller:
-    image: ghcr.io/itayfraiman/home-monitoring/controller:${IMAGE_TAG:-local}
+    image: ghcr.io/itayfraiman/home-monitoring/controller:${IMAGE_TAG:-main}
     restart: unless-stopped
     environment:
       RULES_PATH: /etc/home-monitoring/rules.yaml
