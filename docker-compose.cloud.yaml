@@ -1,0 +1,42 @@
+# Cloud tier: runs on the AWS EC2 box.
+#
+# Talks to sensor-sim/actuator on the edge host over Tailscale -- set
+# EDGE_HOST to that host's Tailscale MagicDNS name (or its 100.x.y.z IP)
+# in the .env file next to this compose file before starting. See
+# docs/deploy/edge-setup.md and docs/deploy/aws-setup.md.
+
+services:
+  controller:
+    image: ghcr.io/itayfraiman/home-monitoring/controller:${IMAGE_TAG:-local}
+    restart: unless-stopped
+    environment:
+      RULES_PATH: /etc/home-monitoring/rules.yaml
+      SENSOR_URL: http://${EDGE_HOST:?set EDGE_HOST in .env}:8001
+      ACTUATOR_URL: http://${EDGE_HOST:?set EDGE_HOST in .env}:8002
+      EVAL_INTERVAL_SECONDS: 10
+    volumes:
+      - ./config/rules.yaml:/etc/home-monitoring/rules.yaml:ro
+
+  prometheus:
+    image: prom/prometheus:v2.53.0
+    restart: unless-stopped
+    command:
+      - --config.file=/etc/prometheus/prometheus.yaml
+    volumes:
+      - ./prometheus/prometheus.cloud.yaml:/etc/prometheus/prometheus.yaml:ro
+    ports:
+      - "9090:9090"
+
+  grafana:
+    image: grafana/grafana:11.1.0
+    restart: unless-stopped
+    environment:
+      GF_AUTH_ANONYMOUS_ENABLED: "true"
+      GF_AUTH_ANONYMOUS_ORG_ROLE: Viewer
+    ports:
+      - "3000:3000"
+    volumes:
+      - grafana-data:/var/lib/grafana
+
+volumes:
+  grafana-data:

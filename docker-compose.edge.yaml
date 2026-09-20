@@ -1,0 +1,33 @@
+# Edge tier: runs on the on-prem Linux box (the "old machine").
+#
+# Stands in for the real hardware location. sensor-sim generates readings
+# with DRIVER=mock instead of reading real GPIO/I2C sensors; actuator
+# likewise uses its mock driver instead of a real relay/solenoid. Swapping
+# either to a real driver later is a config change, not a code change --
+#
+# This host is expected to be reachable from the cloud tier only over the
+# Tailscale mesh (see docs/deploy/edge-setup.md) -- nothing here should be
+# exposed on the home router.
+
+services:
+  sensor-sim:
+    image: ghcr.io/itayfraiman/home-monitoring/sensor-sim:${IMAGE_TAG:-local}
+    restart: unless-stopped
+    environment:
+      CONFIG_PATH: /etc/home-monitoring/zones.yaml
+      TICK_SECONDS: 5
+      DRIVER: mock
+    volumes:
+      - ./config/zones.yaml:/etc/home-monitoring/zones.yaml:ro
+    ports:
+      - "8001:8000"
+
+  actuator:
+    image: ghcr.io/itayfraiman/home-monitoring/actuator:${IMAGE_TAG:-local}
+    restart: unless-stopped
+    environment:
+      DEVICES_PATH: /etc/home-monitoring/devices.yaml
+    volumes:
+      - ./config/devices.yaml:/etc/home-monitoring/devices.yaml:ro
+    ports:
+      - "8002:8000"
